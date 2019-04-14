@@ -11,8 +11,6 @@ use Psr\Log\LogLevel;
 
 /**
  * SyslogTarget writes log to syslog.
- *
- * @author miramir <gmiramir@gmail.com>
  */
 class SyslogTarget extends Target
 {
@@ -45,11 +43,11 @@ class SyslogTarget extends Target
         LogLevel::DEBUG => LOG_DEBUG,
     ];
 
-
     /**
      * Writes log messages to syslog.
      * Starting from version 2.0.14, this method throws LogRuntimeException in case the log can not be exported.
      * @throws LogRuntimeException
+     * @throws \Throwable
      */
     public function export(): void
     {
@@ -64,12 +62,13 @@ class SyslogTarget extends Target
 
     /**
      * {@inheritdoc}
+     * @throws \Throwable
      */
     public function formatMessage(array $message): string
     {
         [$level, $text, $context] = $message;
         $level = Logger::getLevelName($level);
         $prefix = $this->getMessagePrefix($message);
-        return $prefix. '[' . $level . '][' . ($context['category'] ?? '') . '] ' .$text;
+        return $prefix . '[' . $level . '][' . ($context['category'] ?? '') . '] ' . $text;
     }
 }

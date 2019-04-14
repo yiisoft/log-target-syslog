@@ -1,4 +1,5 @@
-<?php
+<?php /** @noinspection PhpIncludeInspection */
+
 /**
  * @link http://www.yiiframework.com/
  * @copyright Copyright (c) 2008 Yii Software LLC
@@ -19,7 +20,7 @@ define('YII_ENV', 'test');
 $_SERVER['SCRIPT_NAME'] = '/' . __DIR__;
 $_SERVER['SCRIPT_FILENAME'] = __FILE__;
 
-(function () {
+(static function () {
     $composerAutoload = getcwd() . '/vendor/autoload.php';
     if (!is_file($composerAutoload)) {
         die('You need to set up the project dependencies using Composer');
