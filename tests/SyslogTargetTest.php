@@ -9,26 +9,24 @@ namespace Yii\Log {
 
     function openlog()
     {
-        return \Yii\Log\Tests\Unit\SyslogTargetTest::openlog(func_get_args());
+        return \Yii\Log\Tests\SyslogTargetTest::openlog(func_get_args());
     }
 
     function syslog()
     {
-        return \Yii\Log\Tests\Unit\SyslogTargetTest::syslog(func_get_args());
+        return \Yii\Log\Tests\SyslogTargetTest::syslog(func_get_args());
     }
 
     function closelog()
     {
-        return \Yii\Log\Tests\Unit\SyslogTargetTest::closelog(func_get_args());
+        return \Yii\Log\Tests\SyslogTargetTest::closelog(func_get_args());
     }
 }
 
-namespace Yii\Log\Tests\Unit {
+namespace Yii\Log\Tests {
 
     use PHPUnit_Framework_MockObject_MockObject;
     use Psr\Log\LogLevel;
-    use yii\helpers\VarDumper;
-    use Yii\Log\Logger;
     use Yii\Log\SyslogTarget;
     use yii\tests\TestCase;
 
@@ -235,7 +233,7 @@ namespace Yii\Log\Tests\Unit {
                 ->willReturn('some prefix');
 
             $result = $this->syslogTarget->formatMessage($message);
-            $this->assertEquals('some prefix[info][category] ' . (string) $exception, $result);
+            $this->assertEquals('some prefix[info][category] ' . (string)$exception, $result);
         }
     }
 }
