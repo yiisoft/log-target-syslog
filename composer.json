@@ -28,7 +28,7 @@
     "prefer-stable": true,
     "require": {
         "yiisoft/log": "^3.0@dev",
-        "psr/log": "~1.1.0"
+        "psr/log": "^1.1"
     },
     "require-dev": {
         "yiisoft/yii-core": "^3.0@dev",
