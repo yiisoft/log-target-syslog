@@ -28,14 +28,13 @@ namespace Yii\Log\Tests {
     use PHPUnit_Framework_MockObject_MockObject;
     use Psr\Log\LogLevel;
     use Yii\Log\SyslogTarget;
-    use yii\tests\TestCase;
 
     /**
      * Class SyslogTargetTest.
      *
      * @group log
      */
-    class SyslogTargetTest extends TestCase
+    class SyslogTargetTest extends \PHPUnit\Framework\TestCase
     {
         /**
          * Array of static functions.
