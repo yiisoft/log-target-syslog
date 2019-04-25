@@ -5,29 +5,29 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace Yii\Log {
+namespace Yiisoft\Log {
 
     function openlog()
     {
-        return \Yii\Log\Tests\SyslogTargetTest::openlog(func_get_args());
+        return \Yiisoft\Log\Tests\SyslogTargetTest::openlog(func_get_args());
     }
 
     function syslog()
     {
-        return \Yii\Log\Tests\SyslogTargetTest::syslog(func_get_args());
+        return \Yiisoft\Log\Tests\SyslogTargetTest::syslog(func_get_args());
     }
 
     function closelog()
     {
-        return \Yii\Log\Tests\SyslogTargetTest::closelog(func_get_args());
+        return \Yiisoft\Log\Tests\SyslogTargetTest::closelog(func_get_args());
     }
 }
 
-namespace Yii\Log\Tests {
+namespace Yiisoft\Log\Tests {
 
     use PHPUnit_Framework_MockObject_MockObject;
     use Psr\Log\LogLevel;
-    use Yii\Log\SyslogTarget;
+    use Yiisoft\Log\SyslogTarget;
 
     /**
      * Class SyslogTargetTest.
@@ -59,7 +59,7 @@ namespace Yii\Log\Tests {
         }
 
         /**
-         * @covers \Yii\Log\SyslogTarget::export()
+         * @covers \Yiisoft\Log\SyslogTarget::export()
          */
         public function testExport()
         {
@@ -149,13 +149,13 @@ namespace Yii\Log\Tests {
         }
 
         /**
-         * @covers \Yii\Log\SyslogTarget::export()
+         * @covers \Yiisoft\Log\SyslogTarget::export()
          *
          * See https://github.com/yiisoft/yii2/issues/14296
          */
         public function testFailedExport()
         {
-            $syslogTarget = $this->getMockBuilder('Yii\\Log\\SyslogTarget')
+            $syslogTarget = $this->getMockBuilder('Yiisoft\\Log\\SyslogTarget')
                 ->setMethods(['openlog', 'syslog', 'formatMessage', 'closelog'])
                 ->getMock();
             $syslogTarget->method('syslog')->willReturn(false);
@@ -182,7 +182,7 @@ namespace Yii\Log\Tests {
                 return $syslogTarget->closelog();
             };
 
-            $this->expectException('Yii\Log\LogRuntimeException');
+            $this->expectException('Yiisoft\Log\LogRuntimeException');
             $syslogTarget->export();
         }
 
@@ -201,7 +201,7 @@ namespace Yii\Log\Tests {
         }
 
         /**
-         * @covers \Yii\Log\SyslogTarget::formatMessage()
+         * @covers \Yiisoft\Log\SyslogTarget::formatMessage()
          */
         public function testFormatMessageWhereTextIsString()
         {
@@ -218,7 +218,7 @@ namespace Yii\Log\Tests {
         }
 
         /**
-         * @covers \Yii\Log\SyslogTarget::formatMessage()
+         * @covers \Yiisoft\Log\SyslogTarget::formatMessage()
          */
         public function testFormatMessageWhereTextIsException()
         {
