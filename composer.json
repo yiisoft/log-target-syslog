@@ -11,12 +11,6 @@
     ],
     "homepage": "http://www.yiiframework.com/",
     "license": "BSD-3-Clause",
-    "authors": [
-        {
-            "name": "miramir",
-            "email": "gmiramir@gmail.com"
-        }
-    ],
     "support": {
         "source": "https://github.com/yiisoft/log-target-syslog",
         "issues": "https://github.com/yiisoft/log-target-syslog/issues",

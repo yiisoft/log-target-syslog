@@ -1,25 +1,19 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
-
 namespace Yiisoft\Log {
 
-    function openlog()
+    function openlog(...$args)
     {
-        return \Yiisoft\Log\Tests\SyslogTargetTest::openlog(func_get_args());
+        return \Yiisoft\Log\Tests\SyslogTargetTest::openlog($args);
     }
 
-    function syslog()
+    function syslog(...$args)
     {
-        return \Yiisoft\Log\Tests\SyslogTargetTest::syslog(func_get_args());
+        return \Yiisoft\Log\Tests\SyslogTargetTest::syslog($args);
     }
 
-    function closelog()
+    function closelog(...$args)
     {
-        return \Yiisoft\Log\Tests\SyslogTargetTest::closelog(func_get_args());
+        return \Yiisoft\Log\Tests\SyslogTargetTest::closelog($args);
     }
 }
 
