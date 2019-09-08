@@ -76,7 +76,7 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
                 ->withIdentity($identity)
                 ->withOptions($options)
                 ->withFacility($facility)
-                ->withMessages($messages);
+                ->setMessages($messages);
 
             $syslogTarget->expects($this->once())
                 ->method('openlog')
@@ -159,7 +159,7 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
 
             $syslogTarget->method('syslog')->willReturn(false);
 
-            $syslogTarget = $syslogTarget->withMessages([
+            $syslogTarget = $syslogTarget->setMessages([
                 [LogLevel::INFO, 'test', []],
             ]);
 
