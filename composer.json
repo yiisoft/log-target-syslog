@@ -25,7 +25,6 @@
         "psr/log": "^1.1"
     },
     "require-dev": {
-        "yiisoft/yii-core": "^3.0@dev",
         "yiisoft/di": "^3.0@dev",
         "yiisoft/cache": "^3.0@dev",
         "phpunit/phpunit": "^7.3",
