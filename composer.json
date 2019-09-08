@@ -25,10 +25,7 @@
         "psr/log": "^1.1"
     },
     "require-dev": {
-        "yiisoft/di": "^3.0@dev",
-        "yiisoft/cache": "^3.0@dev",
-        "phpunit/phpunit": "^7.3",
-        "hiqdev/composer-config-plugin": "^1.0@dev"
+        "phpunit/phpunit": "^7.3"
     },
     "autoload": {
         "psr-4": {
