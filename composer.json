@@ -32,12 +32,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Yiisoft\\Log\\": "src"
+            "Yiisoft\\Log\\Target\\Syslog\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yiisoft\\Log\\Tests\\": "tests"
+            "Yiisoft\\Log\\Target\\Syslog\\Tests\\": "tests"
         }
     },
     "extra": {

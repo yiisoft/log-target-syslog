@@ -1,7 +1,11 @@
 <?php
-namespace Yiisoft\Log;
+
+namespace Yiisoft\Log\Target\Syslog;
 
 use Psr\Log\LogLevel;
+use Yiisoft\Log\Logger;
+use Yiisoft\Log\LogRuntimeException;
+use Yiisoft\Log\Target;
 
 /**
  * SyslogTarget writes log to syslog.
@@ -11,22 +15,24 @@ class SyslogTarget extends Target
     /**
      * @var string syslog identity
      */
-    public $identity;
+    private $identity;
+
     /**
      * @var int syslog facility.
      */
-    public $facility = LOG_USER;
+    private $facility = LOG_USER;
+
     /**
      * @var int openlog options. This is a bitfield passed as the `$option` parameter to [openlog()](http://php.net/openlog).
-     * Defaults to `null` which means to use the default options `LOG_ODELAY | LOG_PID`.
+     * Defaults to `LOG_ODELAY | LOG_PID`.
      * @see http://php.net/openlog for available options.
      */
-    public $options = LOG_ODELAY | LOG_PID;
+    private $options = LOG_ODELAY | LOG_PID;
 
     /**
      * @var array syslog levels
      */
-    private $_syslogLevels = [
+    private $syslogLevels = [
         LogLevel::EMERGENCY => LOG_EMERG,
         LogLevel::ALERT => LOG_ALERT,
         LogLevel::CRITICAL => LOG_CRIT,
@@ -37,6 +43,27 @@ class SyslogTarget extends Target
         LogLevel::DEBUG => LOG_DEBUG,
     ];
 
+    public function withIdentity(string $identity): self
+    {
+        $new = clone $this;
+        $new->identity = $identity;
+        return $new;
+    }
+
+    public function withFacility(int $facility): self
+    {
+        $new = clone $this;
+        $new->facility = $facility;
+        return $new;
+    }
+
+    public function withOptions(int $options): self
+    {
+        $new = clone $this;
+        $new->options = $options;
+        return $new;
+    }
+
     /**
      * Writes log messages to syslog.
      * Starting from version 2.0.14, this method throws LogRuntimeException in case the log can not be exported.
@@ -46,8 +73,8 @@ class SyslogTarget extends Target
     public function export(): void
     {
         openlog($this->identity, $this->options, $this->facility);
-        foreach ($this->messages as $message) {
-            if (syslog($this->_syslogLevels[$message[0]], $this->formatMessage($message)) === false) {
+        foreach ($this->getMessages() as $message) {
+            if (syslog($this->syslogLevels[$message[0]], $this->formatMessage($message)) === false) {
                 throw new LogRuntimeException('Unable to export log through system log!');
             }
         }

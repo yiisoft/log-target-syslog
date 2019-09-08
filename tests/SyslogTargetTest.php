@@ -1,34 +1,30 @@
 <?php
-namespace Yiisoft\Log {
+namespace Yiisoft\Log\Target\Syslog {
 
     function openlog(...$args)
     {
-        return \Yiisoft\Log\Tests\SyslogTargetTest::openlog($args);
+        return \Yiisoft\Log\Target\Syslog\Tests\SyslogTargetTest::openlog($args);
     }
 
     function syslog(...$args)
     {
-        return \Yiisoft\Log\Tests\SyslogTargetTest::syslog($args);
+        return \Yiisoft\Log\Target\Syslog\Tests\SyslogTargetTest::syslog($args);
     }
 
     function closelog(...$args)
     {
-        return \Yiisoft\Log\Tests\SyslogTargetTest::closelog($args);
+        return \Yiisoft\Log\Target\Syslog\Tests\SyslogTargetTest::closelog($args);
     }
 }
 
-namespace Yiisoft\Log\Tests {
+namespace Yiisoft\Log\Target\Syslog\Tests {
 
     use PHPUnit_Framework_MockObject_MockObject;
     use Psr\Log\LogLevel;
-    use Yiisoft\Log\SyslogTarget;
+    use Yiisoft\Log\LogRuntimeException;
+    use Yiisoft\Log\Target\Syslog\SyslogTarget;
 
-    /**
-     * Class SyslogTargetTest.
-     *
-     * @group log
-     */
-    class SyslogTargetTest extends \PHPUnit\Framework\TestCase
+    final class SyslogTargetTest extends \PHPUnit\Framework\TestCase
     {
         /**
          * Array of static functions.
@@ -53,13 +49,14 @@ namespace Yiisoft\Log\Tests {
         }
 
         /**
-         * @covers \Yiisoft\Log\SyslogTarget::export()
+         * @covers \Yiisoft\Log\Target\Syslog\SyslogTarget::export()
          */
-        public function testExport()
+        public function testExport(): void
         {
             $identity = 'identity string';
             $options = LOG_ODELAY | LOG_PID;
-            $facility = 'facility string';
+            $facility = LOG_USER;
+
             $messages = [
                 [LogLevel::INFO, 'info message'],
                 [LogLevel::ERROR, 'error message'],
@@ -75,10 +72,11 @@ namespace Yiisoft\Log\Tests {
                 ->setMethods(['openlog', 'syslog', 'formatMessage', 'closelog'])
                 ->getMock();
 
-            $syslogTarget->identity = $identity;
-            $syslogTarget->options = $options;
-            $syslogTarget->facility = $facility;
-            $syslogTarget->messages = $messages;
+            $syslogTarget = $syslogTarget
+                ->withIdentity($identity)
+                ->withOptions($options)
+                ->withFacility($facility)
+                ->withMessages($messages);
 
             $syslogTarget->expects($this->once())
                 ->method('openlog')
@@ -143,23 +141,27 @@ namespace Yiisoft\Log\Tests {
         }
 
         /**
-         * @covers \Yiisoft\Log\SyslogTarget::export()
+         * @covers Yiisoft\Log\Target\Syslog\SyslogTarget::export()
          *
          * See https://github.com/yiisoft/yii2/issues/14296
          */
-        public function testFailedExport()
+        public function testFailedExport(): void
         {
-            $syslogTarget = $this->getMockBuilder('Yiisoft\\Log\\SyslogTarget')
+            /** @var SyslogTarget $syslogTarget */
+            $syslogTarget = $this->getMockBuilder(SyslogTarget::class)
                 ->setMethods(['openlog', 'syslog', 'formatMessage', 'closelog'])
                 ->getMock();
+
+            $syslogTarget = $syslogTarget
+                ->withIdentity('identity string')
+                ->withFacility(LOG_USER)
+                ->withOptions(LOG_ODELAY | LOG_PID);
+
             $syslogTarget->method('syslog')->willReturn(false);
 
-            $syslogTarget->identity = 'identity string';
-            $syslogTarget->options = LOG_ODELAY | LOG_PID;
-            $syslogTarget->facility = 'facility string';
-            $syslogTarget->messages = [
+            $syslogTarget = $syslogTarget->withMessages([
                 [LogLevel::INFO, 'test', []],
-            ];
+            ]);
 
             static::$functions['openlog'] = function ($arguments) use ($syslogTarget) {
                 $this->assertCount(3, $arguments);
@@ -176,7 +178,7 @@ namespace Yiisoft\Log\Tests {
                 return $syslogTarget->closelog();
             };
 
-            $this->expectException('Yiisoft\Log\LogRuntimeException');
+            $this->expectException(LogRuntimeException::class);
             $syslogTarget->export();
         }
 
@@ -195,9 +197,9 @@ namespace Yiisoft\Log\Tests {
         }
 
         /**
-         * @covers \Yiisoft\Log\SyslogTarget::formatMessage()
+         * @covers Yiisoft\Log\Target\Syslog\SyslogTarget::formatMessage()
          */
-        public function testFormatMessageWhereTextIsString()
+        public function testFormatMessageWhereTextIsString(): void
         {
             $message = [LogLevel::INFO, 'text', ['category' => 'category', 'time' => 'timestamp']];
 
@@ -212,9 +214,9 @@ namespace Yiisoft\Log\Tests {
         }
 
         /**
-         * @covers \Yiisoft\Log\SyslogTarget::formatMessage()
+         * @covers Yiisoft\Log\Target\Syslog\SyslogTarget::formatMessage()
          */
-        public function testFormatMessageWhereTextIsException()
+        public function testFormatMessageWhereTextIsException(): void
         {
             $exception = new \Exception('exception text');
             $message = [LogLevel::INFO, $exception, ['category' => 'category', 'time' => 'timestamp']];
