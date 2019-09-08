@@ -43,25 +43,22 @@ class SyslogTarget extends Target
         LogLevel::DEBUG => LOG_DEBUG,
     ];
 
-    public function withIdentity(string $identity): self
+    public function setIdentity(string $identity): self
     {
-        $new = clone $this;
-        $new->identity = $identity;
-        return $new;
+        $this->identity = $identity;
+        return $this;
     }
 
-    public function withFacility(int $facility): self
+    public function setFacility(int $facility): self
     {
-        $new = clone $this;
-        $new->facility = $facility;
-        return $new;
+        $this->facility = $facility;
+        return $this;
     }
 
-    public function withOptions(int $options): self
+    public function setOptions(int $options): self
     {
-        $new = clone $this;
-        $new->options = $options;
-        return $new;
+        $this->options = $options;
+        return $this;
     }
 
     /**

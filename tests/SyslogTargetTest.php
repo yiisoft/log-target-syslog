@@ -36,7 +36,7 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
         /**
          * @var PHPUnit_Framework_MockObject_MockObject
          */
-        protected $syslogTarget;
+        private $syslogTarget;
 
         /**
          * Set up syslogTarget as the mock object.
@@ -72,10 +72,10 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
                 ->setMethods(['openlog', 'syslog', 'formatMessage', 'closelog'])
                 ->getMock();
 
-            $syslogTarget = $syslogTarget
-                ->withIdentity($identity)
-                ->withOptions($options)
-                ->withFacility($facility)
+            $syslogTarget
+                ->setIdentity($identity)
+                ->setOptions($options)
+                ->setFacility($facility)
                 ->setMessages($messages);
 
             $syslogTarget->expects($this->once())
@@ -141,7 +141,7 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
         }
 
         /**
-         * @covers Yiisoft\Log\Target\Syslog\SyslogTarget::export()
+         * @covers \Yiisoft\Log\Target\Syslog\SyslogTarget::export()
          *
          * See https://github.com/yiisoft/yii2/issues/14296
          */
@@ -152,10 +152,10 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
                 ->setMethods(['openlog', 'syslog', 'formatMessage', 'closelog'])
                 ->getMock();
 
-            $syslogTarget = $syslogTarget
-                ->withIdentity('identity string')
-                ->withFacility(LOG_USER)
-                ->withOptions(LOG_ODELAY | LOG_PID);
+            $syslogTarget
+                ->setIdentity('identity string')
+                ->setFacility(LOG_USER)
+                ->setOptions(LOG_ODELAY | LOG_PID);
 
             $syslogTarget->method('syslog')->willReturn(false);
 
@@ -197,7 +197,7 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
         }
 
         /**
-         * @covers Yiisoft\Log\Target\Syslog\SyslogTarget::formatMessage()
+         * @covers \Yiisoft\Log\Target\Syslog\SyslogTarget::formatMessage()
          */
         public function testFormatMessageWhereTextIsString(): void
         {
@@ -214,7 +214,7 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
         }
 
         /**
-         * @covers Yiisoft\Log\Target\Syslog\SyslogTarget::formatMessage()
+         * @covers \Yiisoft\Log\Target\Syslog\SyslogTarget::formatMessage()
          */
         public function testFormatMessageWhereTextIsException(): void
         {
