@@ -19,7 +19,6 @@ namespace Yiisoft\Log\Target\Syslog {
 
 namespace Yiisoft\Log\Target\Syslog\Tests {
 
-    use PHPUnit_Framework_MockObject_MockObject;
     use Psr\Log\LogLevel;
     use Yiisoft\Log\LogRuntimeException;
     use Yiisoft\Log\Target\Syslog\SyslogTarget;
@@ -34,14 +33,14 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
         public static $functions = [];
 
         /**
-         * @var PHPUnit_Framework_MockObject_MockObject
+         * @var SyslogTarget
          */
         private $syslogTarget;
 
         /**
          * Set up syslogTarget as the mock object.
          */
-        protected function setUp()
+        protected function setUp(): void
         {
             $this->syslogTarget = $this->getMockBuilder(SyslogTarget::class)
                 ->setMethods(['getMessagePrefix'])
@@ -67,7 +66,7 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
                 [LogLevel::ALERT, 'alert message'],
             ];
 
-            /* @var $syslogTarget SyslogTarget|PHPUnit_Framework_MockObject_MockObject */
+            /* @var $syslogTarget SyslogTarget */
             $syslogTarget = $this->getMockBuilder(SyslogTarget::class)
                 ->setMethods(['openlog', 'syslog', 'formatMessage', 'closelog'])
                 ->getMock();
