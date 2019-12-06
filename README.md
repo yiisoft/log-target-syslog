@@ -12,5 +12,5 @@ This library provides the Syslog target for the [yiisoft/log] library.
 
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/log-target-syslog/v/stable.png)](https://packagist.org/packages/yiisoft/log-target-syslog)
 [![Total Downloads](https://poser.pugx.org/yiisoft/log-target-syslog/downloads.png)](https://packagist.org/packages/yiisoft/log-target-syslog)
-[![Build Status](https://travis-ci.org/yiisoft/log-target-syslog.svg?branch=master)](https://travis-ci.org/yiisoft/log-target-syslog)
+[![Build Status](https://travis-ci.com/yiisoft/log-target-syslog.svg?branch=master)](https://travis-ci.com/yiisoft/log-target-syslog)
 
