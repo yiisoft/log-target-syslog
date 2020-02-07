@@ -1,4 +1,5 @@
 <?php
+
 namespace Yiisoft\Log\Target\Syslog {
 
     function openlog(...$args)
