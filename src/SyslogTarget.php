@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Log\Target\Syslog;
 
 use Psr\Log\LogLevel;
@@ -15,24 +17,24 @@ class SyslogTarget extends Target
     /**
      * @var string syslog identity
      */
-    private $identity;
+    private string $identity;
 
     /**
      * @var int syslog facility.
      */
-    private $facility = LOG_USER;
+    private int $facility = LOG_USER;
 
     /**
      * @var int openlog options. This is a bitfield passed as the `$option` parameter to [openlog()](http://php.net/openlog).
      * Defaults to `LOG_ODELAY | LOG_PID`.
      * @see http://php.net/openlog for available options.
      */
-    private $options = LOG_ODELAY | LOG_PID;
+    private int $options = LOG_ODELAY | LOG_PID;
 
     /**
      * @var array syslog levels
      */
-    private $syslogLevels = [
+    private array $syslogLevels = [
         LogLevel::EMERGENCY => LOG_EMERG,
         LogLevel::ALERT => LOG_ALERT,
         LogLevel::CRITICAL => LOG_CRIT,

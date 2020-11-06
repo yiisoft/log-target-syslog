@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Log\Target\Syslog {
 
     function openlog(...$args)
@@ -36,7 +38,7 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
         /**
          * @var SyslogTarget
          */
-        private $syslogTarget;
+        private SyslogTarget $syslogTarget;
 
         /**
          * Set up syslogTarget as the mock object.

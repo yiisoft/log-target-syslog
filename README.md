@@ -14,3 +14,19 @@ This library provides the Syslog target for the [yiisoft/log] library.
 [![Total Downloads](https://poser.pugx.org/yiisoft/log-target-syslog/downloads.png)](https://packagist.org/packages/yiisoft/log-target-syslog)
 [![Build Status](https://travis-ci.com/yiisoft/log-target-syslog.svg?branch=master)](https://travis-ci.com/yiisoft/log-target-syslog)
 
+### Unit testing
+
+The package is tested with [PHPUnit](https://phpunit.de/). To run tests:
+
+```php
+./vendor/bin/phpunit
+```
+
+### Static analysis
+
+The code is statically analyzed with [Psalm](https://psalm.dev/). To run static analysis:
+
+```php
+./vendor/bin/psalm
+```
+
