@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 namespace Yiisoft\Log\Target\Syslog {
-
     function openlog(...$args)
     {
         return \Yiisoft\Log\Target\Syslog\Tests\SyslogTargetTest::openlog($args);
@@ -21,7 +20,6 @@ namespace Yiisoft\Log\Target\Syslog {
 }
 
 namespace Yiisoft\Log\Target\Syslog\Tests {
-
     use Psr\Log\LogLevel;
     use Yiisoft\Log\LogRuntimeException;
     use Yiisoft\Log\Target\Syslog\SyslogTarget;
@@ -122,19 +120,19 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
 
             $syslogTarget->expects($this->once())->method('closelog');
 
-            static::$functions['openlog'] = function ($arguments) use ($syslogTarget) {
+            self::$functions['openlog'] = function ($arguments) use ($syslogTarget) {
                 $this->assertCount(3, $arguments);
                 [$identity, $option, $facility] = $arguments;
                 return $syslogTarget->openlog($identity, $option, $facility);
             };
 
-            static::$functions['syslog'] = function ($arguments) use ($syslogTarget) {
+            self::$functions['syslog'] = function ($arguments) use ($syslogTarget) {
                 $this->assertCount(2, $arguments);
                 [$priority, $message] = $arguments;
                 return $syslogTarget->syslog($priority, $message);
             };
 
-            static::$functions['closelog'] = function ($arguments) use ($syslogTarget) {
+            self::$functions['closelog'] = function ($arguments) use ($syslogTarget) {
                 $this->assertCount(0, $arguments);
                 return $syslogTarget->closelog();
             };
@@ -165,17 +163,17 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
                 [LogLevel::INFO, 'test', []],
             ]);
 
-            static::$functions['openlog'] = function ($arguments) use ($syslogTarget) {
+            self::$functions['openlog'] = function ($arguments) use ($syslogTarget) {
                 $this->assertCount(3, $arguments);
                 [$identity, $option, $facility] = $arguments;
                 return $syslogTarget->openlog($identity, $option, $facility);
             };
-            static::$functions['syslog'] = function ($arguments) use ($syslogTarget) {
+            self::$functions['syslog'] = function ($arguments) use ($syslogTarget) {
                 $this->assertCount(2, $arguments);
                 [$priority, $message] = $arguments;
                 return $syslogTarget->syslog($priority, $message);
             };
-            static::$functions['closelog'] = function ($arguments) use ($syslogTarget) {
+            self::$functions['closelog'] = function ($arguments) use ($syslogTarget) {
                 $this->assertCount(0, $arguments);
                 return $syslogTarget->closelog();
             };
@@ -187,15 +185,16 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
         /**
          * @param $name
          * @param $arguments
+         *
          * @return mixed
          */
         public static function __callStatic($name, $arguments)
         {
-            if (isset(static::$functions[$name]) && is_callable(static::$functions[$name])) {
+            if (isset(self::$functions[$name]) && is_callable(self::$functions[$name])) {
                 $arguments = $arguments[0] ?? $arguments;
-                return forward_static_call(static::$functions[$name], $arguments);
+                return forward_static_call(self::$functions[$name], $arguments);
             }
-            static::fail("Function '$name' has not implemented yet!");
+            self::fail("Function '$name' has not implemented yet!");
         }
 
         /**
