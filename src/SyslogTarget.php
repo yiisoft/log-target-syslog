@@ -27,6 +27,7 @@ class SyslogTarget extends Target
     /**
      * @var int openlog options. This is a bitfield passed as the `$option` parameter to [openlog()](http://php.net/openlog).
      * Defaults to `LOG_ODELAY | LOG_PID`.
+     *
      * @see http://php.net/openlog for available options.
      */
     private int $options = LOG_ODELAY | LOG_PID;
@@ -66,6 +67,7 @@ class SyslogTarget extends Target
     /**
      * Writes log messages to syslog.
      * Starting from version 2.0.14, this method throws LogRuntimeException in case the log can not be exported.
+     *
      * @throws LogRuntimeException
      * @throws \Throwable
      */
@@ -82,6 +84,7 @@ class SyslogTarget extends Target
 
     /**
      * {@inheritdoc}
+     *
      * @throws \Throwable
      */
     public function formatMessage(array $message): string
