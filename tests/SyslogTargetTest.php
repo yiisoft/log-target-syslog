@@ -34,21 +34,6 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
         public static $functions = [];
 
         /**
-         * @var SyslogTarget
-         */
-        private SyslogTarget $syslogTarget;
-
-        /**
-         * Set up syslogTarget as the mock object.
-         */
-        protected function setUp(): void
-        {
-            $this->syslogTarget = $this->getMockBuilder(SyslogTarget::class)
-                ->setMethods(['getMessagePrefix'])
-                ->getMock();
-        }
-
-        /**
          * @covers \Yiisoft\Log\Target\Syslog\SyslogTarget::export()
          */
         public function testExport(): void
@@ -58,25 +43,26 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
             $facility = LOG_USER;
 
             $messages = [
-                [LogLevel::INFO, 'info message'],
-                [LogLevel::ERROR, 'error message'],
-                [LogLevel::WARNING, 'warning message'],
-                [LogLevel::DEBUG, 'trace message'],
-                [LogLevel::NOTICE, 'notice message'],
-                [LogLevel::EMERGENCY, 'emergency message'],
-                [LogLevel::ALERT, 'alert message'],
+                [LogLevel::INFO, 'info message', ['category' => 'app']],
+                [LogLevel::ERROR, 'error message', ['category' => 'app']],
+                [LogLevel::WARNING, 'warning message', ['category' => 'app']],
+                [LogLevel::DEBUG, 'trace message', ['category' => 'app']],
+                [LogLevel::NOTICE, 'notice message', ['category' => 'app']],
+                [LogLevel::EMERGENCY, 'emergency message', ['category' => 'app']],
+                [LogLevel::ALERT, 'alert message', ['category' => 'app']],
             ];
 
             /* @var $syslogTarget SyslogTarget */
             $syslogTarget = $this->getMockBuilder(SyslogTarget::class)
-                ->setMethods(['openlog', 'syslog', 'formatMessage', 'closelog'])
+                ->setMethods(['openlog', 'syslog', 'formatMessages', 'closelog'])
                 ->getMock();
 
             $syslogTarget
                 ->setIdentity($identity)
                 ->setOptions($options)
                 ->setFacility($facility)
-                ->setMessages($messages);
+                ->collect($messages, false)
+            ;
 
             $syslogTarget->expects($this->once())
                 ->method('openlog')
@@ -87,35 +73,15 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
                 );
 
             $syslogTarget->expects($this->exactly(7))
-                ->method('formatMessage')
-                ->withConsecutive(
-                    [$this->equalTo($messages[0])],
-                    [$this->equalTo($messages[1])],
-                    [$this->equalTo($messages[2])],
-                    [$this->equalTo($messages[3])],
-                    [$this->equalTo($messages[4])],
-                    [$this->equalTo($messages[5])],
-                    [$this->equalTo($messages[6])]
-                )->willReturnMap([
-                    [$messages[0], 'formatted message 1'],
-                    [$messages[1], 'formatted message 2'],
-                    [$messages[2], 'formatted message 3'],
-                    [$messages[3], 'formatted message 4'],
-                    [$messages[4], 'formatted message 5'],
-                    [$messages[5], 'formatted message 6'],
-                    [$messages[6], 'formatted message 7'],
-                ]);
-
-            $syslogTarget->expects($this->exactly(7))
                 ->method('syslog')
                 ->withConsecutive(
-                    [$this->equalTo(LOG_INFO), $this->equalTo('formatted message 1')],
-                    [$this->equalTo(LOG_ERR), $this->equalTo('formatted message 2')],
-                    [$this->equalTo(LOG_WARNING), $this->equalTo('formatted message 3')],
-                    [$this->equalTo(LOG_DEBUG), $this->equalTo('formatted message 4')],
-                    [$this->equalTo(LOG_NOTICE), $this->equalTo('formatted message 5')],
-                    [$this->equalTo(LOG_EMERG), $this->equalTo('formatted message 6')],
-                    [$this->equalTo(LOG_ALERT), $this->equalTo('formatted message 7')]
+                    [$this->equalTo(LOG_INFO), $this->equalTo('[info][app] info message')],
+                    [$this->equalTo(LOG_ERR), $this->equalTo('[error][app] error message')],
+                    [$this->equalTo(LOG_WARNING), $this->equalTo('[warning][app] warning message')],
+                    [$this->equalTo(LOG_DEBUG), $this->equalTo('[debug][app] trace message')],
+                    [$this->equalTo(LOG_NOTICE), $this->equalTo('[notice][app] notice message')],
+                    [$this->equalTo(LOG_EMERG), $this->equalTo('[emergency][app] emergency message')],
+                    [$this->equalTo(LOG_ALERT), $this->equalTo('[alert][app] alert message')],
                 );
 
             $syslogTarget->expects($this->once())->method('closelog');
@@ -149,7 +115,7 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
         {
             /** @var SyslogTarget $syslogTarget */
             $syslogTarget = $this->getMockBuilder(SyslogTarget::class)
-                ->setMethods(['openlog', 'syslog', 'formatMessage', 'closelog'])
+                ->setMethods(['openlog', 'syslog', 'formatMessages', 'closelog'])
                 ->getMock();
 
             $syslogTarget
@@ -158,10 +124,7 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
                 ->setOptions(LOG_ODELAY | LOG_PID);
 
             $syslogTarget->method('syslog')->willReturn(false);
-
-            $syslogTarget = $syslogTarget->setMessages([
-                [LogLevel::INFO, 'test', []],
-            ]);
+            $syslogTarget->collect([[LogLevel::INFO, 'test', ['category' => 'app']]], false);
 
             self::$functions['openlog'] = function ($arguments) use ($syslogTarget) {
                 $this->assertCount(3, $arguments);
@@ -195,41 +158,6 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
                 return forward_static_call(self::$functions[$name], $arguments);
             }
             self::fail("Function '$name' has not implemented yet!");
-        }
-
-        /**
-         * @covers \Yiisoft\Log\Target\Syslog\SyslogTarget::formatMessage()
-         */
-        public function testFormatMessageWhereTextIsString(): void
-        {
-            $message = [LogLevel::INFO, 'text', ['category' => 'category', 'time' => 'timestamp']];
-
-            $this->syslogTarget
-                ->expects($this->once())
-                ->method('getMessagePrefix')
-                ->with($this->equalTo($message))
-                ->willReturn('some prefix');
-
-            $result = $this->syslogTarget->formatMessage($message);
-            $this->assertEquals('some prefix[info][category] text', $result);
-        }
-
-        /**
-         * @covers \Yiisoft\Log\Target\Syslog\SyslogTarget::formatMessage()
-         */
-        public function testFormatMessageWhereTextIsException(): void
-        {
-            $exception = new \Exception('exception text');
-            $message = [LogLevel::INFO, $exception, ['category' => 'category', 'time' => 'timestamp']];
-
-            $this->syslogTarget
-                ->expects($this->once())
-                ->method('getMessagePrefix')
-                ->with($this->equalTo($message))
-                ->willReturn('some prefix');
-
-            $result = $this->syslogTarget->formatMessage($message);
-            $this->assertEquals('some prefix[info][category] ' . (string)$exception, $result);
         }
     }
 }

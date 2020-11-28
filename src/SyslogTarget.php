@@ -33,6 +33,11 @@ class SyslogTarget extends Target
     private int $options = LOG_ODELAY | LOG_PID;
 
     /**
+     * @var bool Whether the message format was previously set.
+     */
+    private bool $isSetFormatMessage = false;
+
+    /**
      * @var array syslog levels
      */
     private array $syslogLevels = [
@@ -64,34 +69,33 @@ class SyslogTarget extends Target
         return $this;
     }
 
+    public function setFormat(callable $format): Target
+    {
+        $this->isSetFormatMessage = true;
+        return parent::setFormat($format);
+    }
+
     /**
      * Writes log messages to syslog.
      * Starting from version 2.0.14, this method throws LogRuntimeException in case the log can not be exported.
      *
      * @throws LogRuntimeException
-     * @throws \Throwable
      */
     public function export(): void
     {
+        $messages = $this->getMessages();
         openlog($this->identity, $this->options, $this->facility);
-        foreach ($this->getMessages() as $message) {
-            if (syslog($this->syslogLevels[$message[0]], $this->formatMessage($message)) === false) {
-                throw new LogRuntimeException('Unable to export log through system log!');
+
+        if (!$this->isSetFormatMessage) {
+            $this->setFormat(static fn (array $message) => "[{$message[0]}][{$message[2]['category']}] {$message[1]}");
+        }
+
+        foreach ($this->getFormattedMessages() as $key => $message) {
+            if (syslog($this->syslogLevels[$messages[$key][0]], $message) === false) {
+                throw new LogRuntimeException('Unable to export log through system log.');
             }
         }
-        closelog();
-    }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws \Throwable
-     */
-    public function formatMessage(array $message): string
-    {
-        [$level, $text, $context] = $message;
-        $level = Logger::getLevelName($level);
-        $prefix = $this->getMessagePrefix($message);
-        return $prefix . '[' . $level . '][' . ($context['category'] ?? '') . '] ' . $text;
+        closelog();
     }
 }
