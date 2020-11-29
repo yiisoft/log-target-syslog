@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Log\Target\Syslog;
 
 use Psr\Log\LogLevel;
-use Yiisoft\Log\Logger;
-use Yiisoft\Log\LogRuntimeException;
+use RuntimeException;
 use Yiisoft\Log\Target;
 
 /**
@@ -31,6 +30,11 @@ class SyslogTarget extends Target
      * @see http://php.net/openlog for available options.
      */
     private int $options = LOG_ODELAY | LOG_PID;
+
+    /**
+     * @var bool Whether the message format was previously set.
+     */
+    private bool $isMessageFormatSet = false;
 
     /**
      * @var array syslog levels
@@ -64,34 +68,33 @@ class SyslogTarget extends Target
         return $this;
     }
 
-    /**
-     * Writes log messages to syslog.
-     * Starting from version 2.0.14, this method throws LogRuntimeException in case the log can not be exported.
-     *
-     * @throws LogRuntimeException
-     * @throws \Throwable
-     */
-    public function export(): void
+    public function setFormat(callable $format): Target
     {
-        openlog($this->identity, $this->options, $this->facility);
-        foreach ($this->getMessages() as $message) {
-            if (syslog($this->syslogLevels[$message[0]], $this->formatMessage($message)) === false) {
-                throw new LogRuntimeException('Unable to export log through system log!');
-            }
-        }
-        closelog();
+        $this->isMessageFormatSet = true;
+        return parent::setFormat($format);
     }
 
     /**
-     * {@inheritdoc}
+     * Writes log messages to syslog.
+     * Starting from version 2.0.14, this method throws RuntimeException in case the log can not be exported.
      *
-     * @throws \Throwable
+     * @throws RuntimeException
      */
-    public function formatMessage(array $message): string
+    public function export(): void
     {
-        [$level, $text, $context] = $message;
-        $level = Logger::getLevelName($level);
-        $prefix = $this->getMessagePrefix($message);
-        return $prefix . '[' . $level . '][' . ($context['category'] ?? '') . '] ' . $text;
+        $messages = $this->getMessages();
+        openlog($this->identity, $this->options, $this->facility);
+
+        if (!$this->isMessageFormatSet) {
+            $this->setFormat(static fn (array $message) => "[{$message[0]}][{$message[2]['category']}] {$message[1]}");
+        }
+
+        foreach ($this->getFormattedMessages() as $key => $message) {
+            if (syslog($this->syslogLevels[$messages[$key][0]], $message) === false) {
+                throw new RuntimeException('Unable to export log through system log.');
+            }
+        }
+
+        closelog();
     }
 }
