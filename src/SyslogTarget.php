@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Log\Target\Syslog;
 
 use Psr\Log\LogLevel;
-use Yiisoft\Log\Logger;
-use Yiisoft\Log\LogRuntimeException;
+use RuntimeException;
 use Yiisoft\Log\Target;
 
 /**
@@ -77,9 +76,9 @@ class SyslogTarget extends Target
 
     /**
      * Writes log messages to syslog.
-     * Starting from version 2.0.14, this method throws LogRuntimeException in case the log can not be exported.
+     * Starting from version 2.0.14, this method throws RuntimeException in case the log can not be exported.
      *
-     * @throws LogRuntimeException
+     * @throws RuntimeException
      */
     public function export(): void
     {
@@ -92,7 +91,7 @@ class SyslogTarget extends Target
 
         foreach ($this->getFormattedMessages() as $key => $message) {
             if (syslog($this->syslogLevels[$messages[$key][0]], $message) === false) {
-                throw new LogRuntimeException('Unable to export log through system log.');
+                throw new RuntimeException('Unable to export log through system log.');
             }
         }
 

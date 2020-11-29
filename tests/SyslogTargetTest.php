@@ -21,7 +21,7 @@ namespace Yiisoft\Log\Target\Syslog {
 
 namespace Yiisoft\Log\Target\Syslog\Tests {
     use Psr\Log\LogLevel;
-    use Yiisoft\Log\LogRuntimeException;
+    use RuntimeException;
     use Yiisoft\Log\Target\Syslog\SyslogTarget;
 
     final class SyslogTargetTest extends \PHPUnit\Framework\TestCase
@@ -141,7 +141,7 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
                 return $syslogTarget->closelog();
             };
 
-            $this->expectException(LogRuntimeException::class);
+            $this->expectException(RuntimeException::class);
             $syslogTarget->export();
         }
 
