@@ -34,7 +34,7 @@ class SyslogTarget extends Target
     /**
      * @var bool Whether the message format was previously set.
      */
-    private bool $isSetFormatMessage = false;
+    private bool $isMessageFormatSet = false;
 
     /**
      * @var array syslog levels
@@ -70,7 +70,7 @@ class SyslogTarget extends Target
 
     public function setFormat(callable $format): Target
     {
-        $this->isSetFormatMessage = true;
+        $this->isMessageFormatSet = true;
         return parent::setFormat($format);
     }
 
@@ -85,7 +85,7 @@ class SyslogTarget extends Target
         $messages = $this->getMessages();
         openlog($this->identity, $this->options, $this->facility);
 
-        if (!$this->isSetFormatMessage) {
+        if (!$this->isMessageFormatSet) {
             $this->setFormat(static fn (array $message) => "[{$message[0]}][{$message[2]['category']}] {$message[1]}");
         }
 
