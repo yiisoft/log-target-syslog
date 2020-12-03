@@ -22,6 +22,7 @@ namespace Yiisoft\Log\Target\Syslog {
 namespace Yiisoft\Log\Target\Syslog\Tests {
     use Psr\Log\LogLevel;
     use RuntimeException;
+    use Yiisoft\Log\Message;
     use Yiisoft\Log\Target\Syslog\SyslogTarget;
 
     final class SyslogTargetTest extends \PHPUnit\Framework\TestCase
@@ -43,19 +44,23 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
             $facility = LOG_USER;
 
             $messages = [
-                [LogLevel::INFO, 'info message', ['category' => 'app']],
-                [LogLevel::ERROR, 'error message', ['category' => 'app']],
-                [LogLevel::WARNING, 'warning message', ['category' => 'app']],
-                [LogLevel::DEBUG, 'trace message', ['category' => 'app']],
-                [LogLevel::NOTICE, 'notice message', ['category' => 'app']],
-                [LogLevel::EMERGENCY, 'emergency message', ['category' => 'app']],
-                [LogLevel::ALERT, 'alert message', ['category' => 'app']],
+                new Message(LogLevel::INFO, 'info message', ['category' => 'app']),
+                new Message(LogLevel::ERROR, 'error message', ['category' => 'app']),
+                new Message(LogLevel::WARNING, 'warning message', ['category' => 'app']),
+                new Message(LogLevel::DEBUG, 'trace message', ['category' => 'app']),
+                new Message(LogLevel::NOTICE, 'notice message', ['category' => 'app']),
+                new Message(LogLevel::EMERGENCY, 'emergency message', ['category' => 'app']),
+                new Message(LogLevel::ALERT, 'alert message', ['category' => 'app']),
             ];
 
             /* @var $syslogTarget SyslogTarget */
             $syslogTarget = $this->getMockBuilder(SyslogTarget::class)
                 ->setMethods(['openlog', 'syslog', 'formatMessages', 'closelog'])
                 ->getMock();
+
+            $syslogTarget->setFormat(static function (Message $message) {
+                return "[{$message->level()}][{$message->context('category', '')}] {$message->message()}";
+            });
 
             $syslogTarget
                 ->setIdentity($identity)
@@ -124,7 +129,7 @@ namespace Yiisoft\Log\Target\Syslog\Tests {
                 ->setOptions(LOG_ODELAY | LOG_PID);
 
             $syslogTarget->method('syslog')->willReturn(false);
-            $syslogTarget->collect([[LogLevel::INFO, 'test', ['category' => 'app']]], false);
+            $syslogTarget->collect([new Message(LogLevel::INFO, 'test', ['category' => 'app'])], false);
 
             self::$functions['openlog'] = function ($arguments) use ($syslogTarget) {
                 $this->assertCount(3, $arguments);
