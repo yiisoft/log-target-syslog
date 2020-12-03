@@ -6,6 +6,7 @@ namespace Yiisoft\Log\Target\Syslog;
 
 use Psr\Log\LogLevel;
 use RuntimeException;
+use Yiisoft\Log\Message;
 use Yiisoft\Log\Target;
 
 /**
@@ -82,15 +83,17 @@ class SyslogTarget extends Target
      */
     public function export(): void
     {
-        $messages = $this->getMessages();
+        $formattedMessages = $this->getFormattedMessages();
         openlog($this->identity, $this->options, $this->facility);
 
         if (!$this->isMessageFormatSet) {
-            $this->setFormat(static fn (array $message) => "[{$message[0]}][{$message[2]['category']}] {$message[1]}");
+            $this->setFormat(static function (Message $message) {
+                return "[{$message->level()}][{$message->context('category', '')}] {$message->message()}";
+            });
         }
 
-        foreach ($this->getFormattedMessages() as $key => $message) {
-            if (syslog($this->syslogLevels[$messages[$key][0]], $message) === false) {
+        foreach ($this->getMessages() as $key => $message) {
+            if (syslog($this->syslogLevels[$message->level()], $formattedMessages[$key]) === false) {
                 throw new RuntimeException('Unable to export log through system log.');
             }
         }
