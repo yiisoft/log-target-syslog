@@ -27,14 +27,14 @@ use const LOG_WARNING;
 final class SyslogTarget extends Target
 {
     /**
-     * @var string The openlog identity. This is a bitfield passed as the `$ident` parameter to `openlog()`.
+     * @var string The string that is prefixed to each message.
      *
      * @see https://www.php.net/openlog
      */
     private string $identity;
 
     /**
-     * @var int The openlog options. This is a bitfield passed as the `$option` parameter to `openlog()`.
+     * @var int Bit options to be used when generating a log message.
      *
      * Defaults to `LOG_ODELAY | LOG_PID`.
      *
@@ -43,7 +43,8 @@ final class SyslogTarget extends Target
     private int $options;
 
     /**
-     * @var int The openlog facility. his is a bitfield passed as the `$facility` parameter to `openlog()`.
+     * @var int Used to specify what type of program is logging the message. This allows you to specify (in your
+     * machine's syslog configuration) how messages coming from different facilities will be handled.
      *
      * Defaults to `LOG_USER`.
      *
@@ -52,7 +53,7 @@ final class SyslogTarget extends Target
     private int $facility;
 
     /**
-     * @var array The syslog levels.
+     * @var array Syslog levels.
      */
     private array $syslogLevels = [
         LogLevel::EMERGENCY => LOG_EMERG,
@@ -66,9 +67,10 @@ final class SyslogTarget extends Target
     ];
 
     /**
-     * @param string $identity The openlog identity. This is a bitfield passed as the `$ident` parameter to `openlog()`.
-     * @param int $options The openlog options. This is a bitfield passed as the `$option` parameter to `openlog()`.
-     * @param int $facility The openlog facility. his is a bitfield passed as the `$facility` parameter to `openlog()`.
+     * @param string $identity The string that is prefixed to each message.
+     * @param int $options Bit options to be used when generating a log message.
+     * @param int $facility Used to specify what type of program is logging the message. This allows you to specify (in your
+     * machine's syslog configuration) how messages coming from different facilities will be handled.
      */
     public function __construct(string $identity, int $options = LOG_ODELAY | LOG_PID, int $facility = LOG_USER)
     {
