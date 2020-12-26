@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use Psr\Log\LoggerInterface;
-use Yiisoft\Aliases\Aliases;
 use Yiisoft\Log\Logger;
 use Yiisoft\Log\Target\Syslog\SyslogTarget;
 
@@ -12,7 +11,7 @@ use Yiisoft\Log\Target\Syslog\SyslogTarget;
 return [
     LoggerInterface::class => static fn (SyslogTarget $syslogTarget) => new Logger([$syslogTarget]),
 
-    SyslogTarget::class => static fn (Aliases $aliases) => new SyslogTarget(
-        $aliases->get($params['yiisoft/log-target-syslog']['syslogTarget']['identity']),
+    SyslogTarget::class => static fn () => new SyslogTarget(
+        $params['yiisoft/log-target-syslog']['syslogTarget']['identity'],
     ),
 ];
