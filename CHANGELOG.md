@@ -1,5 +1,3 @@
-Yii Log - Syslog Target Change Log
-==================================
+# Yii Log - Syslog Target Change Log
 
-3.0.0 under development
------------------------
+1.0.0 under development
