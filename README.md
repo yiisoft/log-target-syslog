@@ -22,7 +22,7 @@ This package provides the Syslog target for the [yiisoft/log](https://github.com
 The package could be installed with composer:
 
 ```
-composer install yiisoft/log-target-syslog
+composer require yiisoft/log-target-syslog
 ```
 
 ## General usage
