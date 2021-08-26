@@ -1,10 +1,9 @@
 # Yii Log - Syslog Target Change Log
 
 
-## 1.0.2 under development
+## 1.0.2 August 26, 2021
 
 - Bug #20: Remove `Psr\Log\LoggerInterface` definition from configuration for using multiple targets to application (devanych)
-
 
 ## 1.0.1 March 23, 2021
 
