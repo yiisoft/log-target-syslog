@@ -3,7 +3,7 @@
 
 ## 1.0.2 under development
 
-- no changes in this release.
+- Bug #20: Remove `Psr\Log\LoggerInterface` definition from configuration for using multiple targets to application (devanych)
 
 
 ## 1.0.1 March 23, 2021
