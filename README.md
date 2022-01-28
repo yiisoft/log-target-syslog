@@ -17,12 +17,16 @@
 
 This package provides the Syslog target for the [yiisoft/log](https://github.com/yiisoft/log) library.
 
+## Requirements
+
+- PHP 7.4 or higher.
+
 ## Installation
 
 The package could be installed with composer:
 
 ```
-composer require yiisoft/log-target-syslog
+composer require yiisoft/log-target-syslog --prefer-dist
 ```
 
 ## General usage
@@ -55,6 +59,8 @@ For use in the [Yii framework](http://www.yiiframework.com/), see the configurat
 - [`config/params.php`](https://github.com/yiisoft/log-target-syslog/blob/master/config/params.php)
 
 See [Yii guide to logging](https://github.com/yiisoft/docs/blob/master/guide/en/runtime/logging.md) for more info.
+
+## Testing
 
 ### Unit testing
 
