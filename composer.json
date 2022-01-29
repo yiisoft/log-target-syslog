@@ -9,13 +9,13 @@
         "logger",
         "syslog"
     ],
-    "homepage": "http://www.yiiframework.com/",
+    "homepage": "https://www.yiiframework.com/",
     "license": "BSD-3-Clause",
     "support": {
         "source": "https://github.com/yiisoft/log-target-syslog",
         "issues": "https://github.com/yiisoft/log-target-syslog/issues",
-        "forum": "http://www.yiiframework.com/forum/",
-        "wiki": "http://www.yiiframework.com/wiki/",
+        "forum": "https://www.yiiframework.com/forum/",
+        "wiki": "https://www.yiiframework.com/wiki/",
         "irc": "irc://irc.freenode.net/yii",
         "chat": "https://t.me/yii3en"
     },
