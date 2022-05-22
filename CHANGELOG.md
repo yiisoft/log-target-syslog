@@ -1,7 +1,7 @@
 # Yii Log - Syslog Target Change Log
 
 
-## 2.0.0 under development
+## 1.1.0 under development
 
 - Chg #24: Raise the minimum `yiisoft/log` version to `^2.0` and the minimum PHP version to 8.0 (rustamwin)
 
