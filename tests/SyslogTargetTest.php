@@ -46,7 +46,8 @@ final class SyslogTargetTest extends TestCase
 
         $syslogTarget = new SyslogTarget($identity, $options, $facility);
 
-        $this->getFunctionMock('Yiisoft\Log\Target\Syslog', 'openlog')
+        $this
+            ->getFunctionMock('Yiisoft\Log\Target\Syslog', 'openlog')
             ->expects($this->once())
             ->with(
                 $this->equalTo($identity),
@@ -55,7 +56,8 @@ final class SyslogTargetTest extends TestCase
             )
         ;
 
-        $this->getFunctionMock('Yiisoft\Log\Target\Syslog', 'syslog')
+        $this
+            ->getFunctionMock('Yiisoft\Log\Target\Syslog', 'syslog')
             ->expects($this->exactly(8))
             ->withConsecutive(
                 [$this->equalTo(LOG_INFO), $this->equalTo('[info][app] info message')],
@@ -69,7 +71,8 @@ final class SyslogTargetTest extends TestCase
             )
         ;
 
-        $this->getFunctionMock('Yiisoft\Log\Target\Syslog', 'closelog')
+        $this
+            ->getFunctionMock('Yiisoft\Log\Target\Syslog', 'closelog')
             ->expects($this->once())
         ;
 
@@ -80,7 +83,8 @@ final class SyslogTargetTest extends TestCase
     {
         $syslogTarget = new SyslogTarget('identity-string');
 
-        $this->getFunctionMock('Yiisoft\Log\Target\Syslog', 'syslog')
+        $this
+            ->getFunctionMock('Yiisoft\Log\Target\Syslog', 'syslog')
             ->expects($this->once())
             ->willReturn(false)
         ;
@@ -95,7 +99,8 @@ final class SyslogTargetTest extends TestCase
         $syslogTarget->setPrefix(static fn () => 'Prefix ');
         $syslogTarget->setFormat(static fn (Message $message) => "[{$message->level()}] {$message->message()}");
 
-        $this->getFunctionMock('Yiisoft\Log\Target\Syslog', 'syslog')
+        $this
+            ->getFunctionMock('Yiisoft\Log\Target\Syslog', 'syslog')
             ->expects($this->once())
             ->with(
                 $this->equalTo(LOG_INFO),
