@@ -27,32 +27,6 @@ use const LOG_WARNING;
 final class SyslogTarget extends Target
 {
     /**
-     * @var string The string that is prefixed to each message.
-     *
-     * @see https://www.php.net/openlog
-     */
-    private string $identity;
-
-    /**
-     * @var int Bit options to be used when generating a log message.
-     *
-     * Defaults to `LOG_ODELAY | LOG_PID`.
-     *
-     * @see https://www.php.net/openlog
-     */
-    private int $options;
-
-    /**
-     * @var int Used to specify what type of program is logging the message. This allows you to specify (in your
-     * machine's syslog configuration) how messages coming from different facilities will be handled.
-     *
-     * Defaults to `LOG_USER`.
-     *
-     * @see https://www.php.net/openlog
-     */
-    private int $facility;
-
-    /**
      * @var array Syslog levels.
      */
     private array $syslogLevels = [
@@ -72,16 +46,11 @@ final class SyslogTarget extends Target
      * @param int $facility Used to specify what type of program is logging the message. This allows you to specify (in your
      * machine's syslog configuration) how messages coming from different facilities will be handled.
      */
-    public function __construct(string $identity, int $options = LOG_ODELAY | LOG_PID, int $facility = LOG_USER)
+    public function __construct(private string $identity, private int $options = LOG_ODELAY | LOG_PID, private int $facility = LOG_USER)
     {
-        $this->identity = $identity;
-        $this->options = $options;
-        $this->facility = $facility;
         parent::__construct();
 
-        $this->setFormat(static function (Message $message) {
-            return "[{$message->level()}][{$message->context('category', '')}] {$message->message()}";
-        });
+        $this->setFormat(static fn(Message $message) => "[{$message->level()}][{$message->context('category', '')}] {$message->message()}");
     }
 
     /**
