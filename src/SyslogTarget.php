@@ -50,7 +50,7 @@ final class SyslogTarget extends Target
     {
         parent::__construct();
 
-        $this->setFormat(static fn(Message $message) => "[{$message->level()}][{$message->context('category', '')}] {$message->message()}");
+        $this->setFormat(static fn (Message $message) => "[{$message->level()}][{$message->context('category', '')}] {$message->message()}");
     }
 
     /**
