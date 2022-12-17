@@ -22,7 +22,7 @@ use const LOG_USER;
 use const LOG_WARNING;
 
 /**
- * SyslogTarget writes log to syslog.
+ * `SyslogTarget` writes log to syslog.
  */
 final class SyslogTarget extends Target
 {
@@ -43,14 +43,18 @@ final class SyslogTarget extends Target
     /**
      * @param string $identity The string that is prefixed to each message.
      * @param int $options Bit options to be used when generating a log message.
-     * @param int $facility Used to specify what type of program is logging the message. This allows you to specify (in your
-     * machine's syslog configuration) how messages coming from different facilities will be handled.
+     * @param int $facility Used to specify what type of program is logging the message. This allows you to specify
+     * (in your machine's syslog configuration) how messages coming from different facilities will be handled.
+     *
+     * @link https://www.php.net/openlog
      */
     public function __construct(private string $identity, private int $options = LOG_ODELAY | LOG_PID, private int $facility = LOG_USER)
     {
         parent::__construct();
 
-        $this->setFormat(static fn (Message $message) => "[{$message->level()}][{$message->context('category', '')}] {$message->message()}");
+        $this->setFormat(static function (Message $message) {
+            return "[{$message->level()}][{$message->context('category', '')}] {$message->message()}";
+        });
     }
 
     /**
