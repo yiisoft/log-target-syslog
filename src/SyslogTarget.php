@@ -48,8 +48,11 @@ final class SyslogTarget extends Target
      *
      * @link https://www.php.net/openlog
      */
-    public function __construct(private string $identity, private int $options = LOG_ODELAY | LOG_PID, private int $facility = LOG_USER)
-    {
+    public function __construct(
+        private string $identity,
+        private int $options = LOG_ODELAY | LOG_PID,
+        private int $facility = LOG_USER
+    ) {
         parent::__construct();
 
         $this->setFormat(static function (Message $message) {
