@@ -26,10 +26,7 @@ use const LOG_WARNING;
  */
 final class SyslogTarget extends Target
 {
-    /**
-     * @var array Syslog levels.
-     */
-    private array $syslogLevels = [
+    private const SYSLOG_LEVELS = [
         LogLevel::EMERGENCY => LOG_EMERG,
         LogLevel::ALERT => LOG_ALERT,
         LogLevel::CRITICAL => LOG_CRIT,
@@ -75,7 +72,7 @@ final class SyslogTarget extends Target
         openlog($this->identity, $this->options, $this->facility);
 
         foreach ($this->getMessages() as $key => $message) {
-            if (syslog($this->syslogLevels[$message->level()], $formattedMessages[$key]) === false) {
+            if (syslog(self::SYSLOG_LEVELS[$message->level()], $formattedMessages[$key]) === false) {
                 throw new RuntimeException('Unable to export log through system log.');
             }
         }
