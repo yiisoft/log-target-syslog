@@ -1,8 +1,8 @@
 # Yii Log - Syslog Target Change Log
 
-## 1.1.1 under development
+## 2.0.0 under development
 
-- no changes in this release.
+- Chg #32: Adapt configuration group names to Yii conventions (@vjik)
 
 ## 1.1.0 May 23, 2022
 
