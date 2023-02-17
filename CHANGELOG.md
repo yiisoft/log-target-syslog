@@ -1,6 +1,6 @@
 # Yii Log - Syslog Target Change Log
 
-## 2.0.0 under development
+## 2.0.0 February 17, 2023
 
 - Chg #32: Adapt configuration group names to Yii conventions (@vjik)
 
