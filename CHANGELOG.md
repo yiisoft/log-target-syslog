@@ -2,7 +2,7 @@
 
 ## 2.0.1 under development
 
-- no changes in this release.
+- Enh #45: Remove dead code that check case when `syslog` returns false (@vjik)
 
 ## 2.0.0 February 17, 2023
 

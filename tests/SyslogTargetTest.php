@@ -79,20 +79,6 @@ final class SyslogTargetTest extends TestCase
         $syslogTarget->collect($messages, true);
     }
 
-    public function testFailedExport(): void
-    {
-        $syslogTarget = new SyslogTarget('identity-string');
-
-        $this
-            ->getFunctionMock('Yiisoft\Log\Target\Syslog', 'syslog')
-            ->expects($this->once())
-            ->willReturn(false)
-        ;
-
-        $this->expectException(RuntimeException::class);
-        $syslogTarget->collect([new Message(LogLevel::INFO, 'test', ['category' => 'app'])], true);
-    }
-
     public function testSetFormatAndSetPrefixAndExport(): void
     {
         $syslogTarget = new SyslogTarget('identity-string');
