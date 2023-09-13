@@ -72,9 +72,7 @@ final class SyslogTarget extends Target
         openlog($this->identity, $this->options, $this->facility);
 
         foreach ($this->getMessages() as $key => $message) {
-            if (syslog(self::SYSLOG_LEVELS[$message->level()], $formattedMessages[$key]) === false) {
-                throw new RuntimeException('Unable to export log through system log.');
-            }
+            syslog(self::SYSLOG_LEVELS[$message->level()], $formattedMessages[$key]);
         }
 
         closelog();
