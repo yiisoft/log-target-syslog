@@ -7,7 +7,6 @@ namespace Yiisoft\Log\Target\Syslog\Tests;
 use phpmock\phpunit\PHPMock;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;
-use RuntimeException;
 use Yiisoft\Log\Message;
 use Yiisoft\Log\Target\Syslog\SyslogTarget;
 
