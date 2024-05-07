@@ -23,10 +23,10 @@ This package provides the Syslog target for the [yiisoft/log](https://github.com
 
 ## Installation
 
-The package could be installed with composer:
+The package could be installed with [Composer](https://getcomposer.org):
 
 ```shell
-composer require yiisoft/log-target-syslog --prefer-dist
+composer require yiisoft/log-target-syslog
 ```
 
 ## General usage
@@ -50,41 +50,26 @@ Creating a logger:
 ```php
 $logger = new \Yiisoft\Log\Logger([$syslogTarget]);
 ```
+For use in the [Yii framework](https://www.yiiframework.com/), see the configuration files:
+  - [`config/di.php`](https://github.com/yiisoft/log-target-syslog/blob/master/config/di.php)
+  - [`config/params.php`](https://github.com/yiisoft/log-target-syslog/blob/master/config/params.php)
+ 
+## Documentation
 
 For a description of using the logger, see the [yiisoft/log](https://github.com/yiisoft/log) package.
 
-For use in the [Yii framework](https://www.yiiframework.com/), see the configuration files:
+- [Yii guide to logging](https://github.com/yiisoft/docs/blob/master/guide/en/runtime/logging.md)
+- [Internals](docs/internals.md)
 
-- [`config/common.php`](https://github.com/yiisoft/log-target-syslog/blob/master/config/common.php)
-- [`config/params.php`](https://github.com/yiisoft/log-target-syslog/blob/master/config/params.php)
+If you need help or have a question, the [Yii Forum](https://forum.yiiframework.com/c/yii-3-0/63) is a good place
+for that. You may also check out other [Yii Community Resources](https://www.yiiframework.com/community).
 
-See [Yii guide to logging](https://github.com/yiisoft/docs/blob/master/guide/en/runtime/logging.md) for more info.
+## License
 
-## Testing
+The Yii Logging Library - Syslog Target is free software. It is released under the terms of the BSD License.
+Please see [`LICENSE`](./LICENSE.md) for more information.
 
-### Unit testing
-
-The package is tested with [PHPUnit](https://phpunit.de/). To run tests:
-
-```shell
-./vendor/bin/phpunit
-```
-
-### Mutation testing
-
-The package tests are checked with [Infection](https://infection.github.io/) mutation framework. To run it:
-
-```shell
-./vendor/bin/infection
-```
-
-### Static analysis
-
-The code is statically analyzed with [Psalm](https://psalm.dev/). To run static analysis:
-
-```shell
-./vendor/bin/psalm
-```
+Maintained by [Yii Software](https://www.yiiframework.com/).
 
 ### Support the project
 
@@ -97,10 +82,3 @@ The code is statically analyzed with [Psalm](https://psalm.dev/). To run static 
 [![Telegram](https://img.shields.io/badge/telegram-join-1DA1F2?style=flat&logo=telegram)](https://t.me/yii3en)
 [![Facebook](https://img.shields.io/badge/facebook-join-1DA1F2?style=flat&logo=facebook&logoColor=ffffff)](https://www.facebook.com/groups/yiitalk)
 [![Slack](https://img.shields.io/badge/slack-join-1DA1F2?style=flat&logo=slack)](https://yiiframework.com/go/slack)
-
-## License
-
-The Yii Logging Library - Syslog Target is free software. It is released under the terms of the BSD License.
-Please see [`LICENSE`](./LICENSE.md) for more information.
-
-Maintained by [Yii Software](https://www.yiiframework.com/).

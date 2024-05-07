@@ -1,4 +1,4 @@
-# Yii Log - Syslog Target Change Log
+# Yii Logging Library - Syslog Target Change Log
 
 ## 2.0.1 under development
 
