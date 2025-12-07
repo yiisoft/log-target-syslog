@@ -95,4 +95,41 @@ final class SyslogTargetTest extends TestCase
 
         $syslogTarget->collect([new Message(LogLevel::INFO, 'test', ['category' => 'app'])], true);
     }
+
+    public function testConstructorWithLevels(): void
+    {
+        $identity = 'identity-string';
+        $levels = [LogLevel::ERROR, LogLevel::WARNING];
+
+        $syslogTarget = new SyslogTarget($identity, LOG_ODELAY | LOG_PID, LOG_USER, $levels);
+
+        $messages = [
+            new Message(LogLevel::INFO, 'info message', ['category' => 'app']),
+            new Message(LogLevel::ERROR, 'error message', ['category' => 'app']),
+            new Message(LogLevel::WARNING, 'warning message', ['category' => 'app']),
+            new Message(LogLevel::DEBUG, 'debug message', ['category' => 'app']),
+        ];
+
+        $this
+            ->getFunctionMock('Yiisoft\Log\Target\Syslog', 'openlog')
+            ->expects($this->once())
+        ;
+
+        // Only ERROR and WARNING messages should be logged
+        $this
+            ->getFunctionMock('Yiisoft\Log\Target\Syslog', 'syslog')
+            ->expects($this->exactly(2))
+            ->withConsecutive(
+                [$this->equalTo(LOG_ERR), $this->equalTo('[error][app] error message')],
+                [$this->equalTo(LOG_WARNING), $this->equalTo('[warning][app] warning message')],
+            )
+        ;
+
+        $this
+            ->getFunctionMock('Yiisoft\Log\Target\Syslog', 'closelog')
+            ->expects($this->once())
+        ;
+
+        $syslogTarget->collect($messages, true);
+    }
 }

@@ -9,5 +9,6 @@ use Yiisoft\Log\Target\Syslog\SyslogTarget;
 return [
     SyslogTarget::class => static fn () => new SyslogTarget(
         $params['yiisoft/log-target-syslog']['syslogTarget']['identity'],
+        levels: $params['yiisoft/log-target-syslog']['syslogTarget']['levels'] ?? [],
     ),
 ];
