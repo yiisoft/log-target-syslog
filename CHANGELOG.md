@@ -2,7 +2,7 @@
 
 ## 2.0.1 under development
 
-- Enh #54: Add `$levels` parameter to `SyslogTarget` constructor (@samdark)
+- New #54: Add optional `$levels` parameter to `SyslogTarget` constructor allowing log level filtering at instantiation (@samdark)
 - Enh #45: Remove dead code that check case when `syslog()` returns false (@vjik)
 
 ## 2.0.0 February 17, 2023
