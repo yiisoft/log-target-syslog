@@ -34,7 +34,6 @@ composer require yiisoft/log-target-syslog
 Creating a target:
 
 ```php
-use Psr\Log\LogLevel;
 use Yiisoft\Log\Target\Syslog\SyslogTarget;
 
 $syslogTarget = new SyslogTarget($identity, $options, $facility, $levels);
