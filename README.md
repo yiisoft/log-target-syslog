@@ -36,14 +36,26 @@ Creating a target:
 ```php
 use Yiisoft\Log\Target\Syslog\SyslogTarget;
 
-$syslogTarget = new SyslogTarget($identity, $options, $facility);
+$syslogTarget = new SyslogTarget($identity, $options, $facility, $levels);
 ```
 
 - `$identity (string)` - The `openlog()` identity.
 - `$options (int)` - The `openlog()` options. Defaults to `LOG_ODELAY | LOG_PID`.
 - `$facility (int)` - The `openlog()` facility. Defaults to `LOG_USER`.
+- `$levels (array)` - The log message levels that this target is interested in. Defaults to `[]` (all levels).
 
-For more information, see the description of the [`openlog()`](https://www.php.net/openlog) function.
+For example, to log only errors and warnings:
+
+```php
+$syslogTarget = new SyslogTarget(
+    'app',
+    LOG_ODELAY | LOG_PID,
+    LOG_USER,
+    [LogLevel::ERROR, LogLevel::WARNING]
+);
+```
+
+For more information about `$identity`, `$options`, and `$facility`, see the description of the [`openlog()`](https://www.php.net/openlog) function.
 
 Creating a logger:
 
