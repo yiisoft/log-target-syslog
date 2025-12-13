@@ -1,6 +1,6 @@
 # Yii Logging Library - Syslog Target Change Log
 
-## 2.0.1 under development
+## 2.1.0 December 13, 2025
 
 - New #54: Add optional `$levels` parameter to `SyslogTarget` constructor allowing log level filtering at instantiation (@samdark)
 - Enh #45: Remove dead code that check case when `syslog()` returns false (@vjik)
