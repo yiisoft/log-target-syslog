@@ -1,5 +1,9 @@
 # Yii Logging Library - Syslog Target Change Log
 
+## 2.1.1 under development
+
+- no changes in this release.
+
 ## 2.1.0 December 13, 2025
 
 - New #54: Add optional `$levels` parameter to `SyslogTarget` constructor allowing log level filtering at instantiation (@samdark)
