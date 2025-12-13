@@ -42,8 +42,7 @@ final class SyslogTarget extends Target
      * @param int $options Bit options to be used when generating a log message.
      * @param int $facility Used to specify what type of program is logging the message. This allows you to specify
      * (in your machine's syslog configuration) how messages coming from different facilities will be handled.
-     * @param array $levels The {@see \Psr\Log\LogLevel log message levels} that this target is interested in.
-     * @psalm-param array<string> $levels
+     * @param string[] $levels The {@see \Psr\Log\LogLevel log message levels} that this target is interested in.
      *
      * @link https://www.php.net/openlog
      */
