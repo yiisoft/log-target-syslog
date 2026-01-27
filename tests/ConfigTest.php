@@ -9,6 +9,8 @@ use Yiisoft\Di\Container;
 use Yiisoft\Di\ContainerConfig;
 use Yiisoft\Log\Target\Syslog\SyslogTarget;
 
+use function dirname;
+
 final class ConfigTest extends TestCase
 {
     public function testBase(): void
@@ -24,8 +26,8 @@ final class ConfigTest extends TestCase
     {
         return new Container(
             ContainerConfig::create()->withDefinitions(
-                $this->getDiConfig($params)
-            )
+                $this->getDiConfig($params),
+            ),
         );
     }
 
