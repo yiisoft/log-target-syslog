@@ -81,15 +81,15 @@ final class SyslogTargetTest extends TestCase
     public function testSetFormatAndSetPrefixAndExport(): void
     {
         $syslogTarget = new SyslogTarget('identity-string');
-        $syslogTarget->setPrefix(static fn () => 'Prefix ');
-        $syslogTarget->setFormat(static fn (Message $message) => "[{$message->level()}] {$message->message()}");
+        $syslogTarget->setPrefix(static fn() => 'Prefix ');
+        $syslogTarget->setFormat(static fn(Message $message) => "[{$message->level()}] {$message->message()}");
 
         $this
             ->getFunctionMock('Yiisoft\Log\Target\Syslog', 'syslog')
             ->expects($this->once())
             ->with(
                 $this->equalTo(LOG_INFO),
-                $this->equalTo('Prefix [info] test')
+                $this->equalTo('Prefix [info] test'),
             )
         ;
 
