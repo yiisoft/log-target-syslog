@@ -41,7 +41,6 @@
         "phpunit/phpunit": "^9.5",
         "rector/rector": "^2.0.3",
         "roave/infection-static-analysis-plugin": "^1.25",
-        "spatie/phpunit-watcher": "^1.23",
         "vimeo/psalm": "^4.30 || ^5.6 || ^6.16.1",
         "yiisoft/di": "^1.2"
     },
@@ -79,7 +78,6 @@
     },
     "scripts": {
         "test": "phpunit --testdox --no-interaction",
-        "test-watch": "phpunit-watcher watch",
         "cs-fix": "php-cs-fixer fix",
         "psalm": "psalm"
     }
