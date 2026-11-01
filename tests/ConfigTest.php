@@ -33,9 +33,7 @@ final class ConfigTest extends TestCase
 
     private function getDiConfig(?array $params = null): array
     {
-        if ($params === null) {
-            $params = $this->getParams();
-        }
+        $params ??= $this->getParams();
         return require dirname(__DIR__) . '/config/di.php';
     }
 
